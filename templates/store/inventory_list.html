@@ -1,0 +1,29 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Inventory List{% endblock %}
+
+{% block content %}
+<h1>Inventory List</h1>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Purchase ID</th>
+      <th scope="col">Product</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Expiry Date</th>
+      <th scope="col">Sell Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for inventory in inventories %}
+    <tr>
+      <th scope="row">{{ inventory.purchase_id }}</th>
+      <td>{{ inventory.product.prod_name }}</td> 
+      <td>{{ inventory.inv_qty }}</td>
+      <td>{{ inventory.exp_date }}</td> 
+      <td>{{ inventory.sell_price }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

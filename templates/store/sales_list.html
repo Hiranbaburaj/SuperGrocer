@@ -1,0 +1,60 @@
+{% extends 'base/base.html' %}
+{% block title %}Sales List{% endblock %}
+
+{% block content %}
+
+{% comment %} {% load static %}
+<link href="{% static 'css/table.css' %}" rel="stylesheet" /> {% endcomment %}
+
+  <h1>Sales List</h1>
+  <table class="table table-hover sales-table" >
+    <thead>
+      <tr class="table-dark">
+        <th scope="col">Transaction ID</th>
+        <th scope="col">View Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sales_order in sales_orders %}
+      <tr scope="row">
+        <td>{{ sales_order.transaction_id }}</td>
+        <td>
+            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#salesModal{{ sales_order.id }}">
+                <i class="fa-solid fa-circle-info fa-xl"></i> 
+            </a>
+        </td>
+    </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Modal -->
+  {% for sales_order in sales_orders %}
+    <div class="modal fade" id="salesModal{{ sales_order.id }}" tabindex="-1" aria-labelledby="salesModalLabel{{ sales_order.id }}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="salesModalLabel{{ sales_order.id }}">Sales Order Details</h5>
+            {% comment %} <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> {% endcomment %}
+          </div>
+          <div class="modal-body">
+            <h5>Buyer: {{ sales_order.buyer}}</h5>
+            <h5>Date: {{ sales_order.date_ordered}}</h5>
+            <h5>Order Items:</h5>
+            <ul>
+              {% for item in sales_order.orderitem_set.all %}
+                <li>{{ item.product.prod_name }} - Quantity: {{ item.quantity }}</li>
+              {% endfor %}
+            </ul>
+            <h5>Total: &#8377;{{sales_order.get_cart_total}}</h5>
+          </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                  <i class="fa-solid fa-xmark fa-2xl"></i>
+              </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

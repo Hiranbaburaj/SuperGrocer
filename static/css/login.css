@@ -1,0 +1,31 @@
+.visually-hidden {
+  position: absolute !important;
+  clip: rect(0, 0, 0, 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.card {
+  background-color: #f8f9fa;  /* Light gray color */
+  border: none;  /* Remove outline */
+}
+
+.card-title {
+  margin-bottom: 0;  /* Remove bottom margin */
+  padding-top: 0.5rem;  /* Adjust vertical position if needed */
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;  /* Set font weight to 500 (medium) */
+}
+
+/* Styles for vertical and horizontal centering */
+.card-header {
+  display: flex;
+  align-items: center;  /* Vertical centering */
+  justify-content: center;  /* Horizontal centering */
+}
+  

@@ -1,0 +1,52 @@
+{% extends 'base/base.html' %}
+{% block title %}Subcategory List{% endblock %}
+{% block content %}
+<div class="container">
+  <h1>Subcategory List</h1>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Subcategory Name</th>
+        <th>Delete</th>  <!-- Add a new column for delete buttons -->
+      </tr>
+    </thead>
+    <tbody>
+      {% for subcategory in subcategories %}
+      <tr>
+        <td>{{ subcategory.category}}</td>
+        <td>{{ subcategory.scat_name }}</td>
+        <td>
+          <!-- Button trigger modal for delete confirmation -->
+          <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteSubcategoryModal{{ subcategory.id }}">
+            <i class="fa-solid fa-trash-can fa-sm"></i>
+          </a>
+
+          <!-- Modal for Delete Confirmation -->
+          <div class="modal fade" id="deleteSubcategoryModal{{ subcategory.id }}" tabindex="-1" aria-labelledby="deleteSubcategoryModalLabel{{ subcategory.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="deleteSubcategoryModalLabel{{ subcategory.id }}">Confirm Deletion</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to delete '{{ subcategory.scat_name }}'?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <form action="{% url 'delete_subcategory' subcategory.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

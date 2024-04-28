@@ -1,0 +1,13 @@
+{% extends 'base/base.html' %}
+{% block title %}
+  Sales Info
+{% endblock %}
+
+{% block content %}
+  <h1>Sales Order Details</h1>
+  <ul>
+    {% for item in order_items %}
+      <li>{{ item.product.prod_name }} - Quantity: {{ item.quantity }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

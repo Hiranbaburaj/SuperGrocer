@@ -1,0 +1,27 @@
+.sales-table {
+    margin: 0 auto; /* Center the table horizontally */
+    width: 100%; /* Make the table full width */
+    border-collapse: collapse;
+  }
+  
+  .sales-table th {
+    position: sticky;
+    top: 0;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+  }
+  
+  .sales-table tbody {
+    height: 200px; /* Set a height for the scrollable area */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+  .sales-table tr {
+    border: 1px solid #ddd;
+  }
+  
+  .sales-table td {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+  }
+  

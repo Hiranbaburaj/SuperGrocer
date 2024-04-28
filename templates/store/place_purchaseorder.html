@@ -1,0 +1,62 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<h1>Place Purchase Order</h1>
+
+<form method="post" id="purchaseOrderForm" data-suppliers-url="{% url 'ajax_load_suppliers' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" value="Place Order" class="btn btn-primary">Place Order</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#id_product").change(function () {  // Use change event on product selection
+      const url = $("#purchaseOrderForm").attr("data-suppliers-url");
+      const productId = $(this).val();
+      console.log(productId);
+
+      $.ajax({
+        url: url,
+        data: {
+          'product_id': productId
+        },
+        success: function (data) {
+          console.log(data);
+          $("#id_supplier").html(data);  // Update suppliers dropdown
+        },
+        error: function (error) {
+          console.log(error);
+        }
+      });
+    });
+
+    $("#id_ord_qty").on('input', function () {  // Calculate order amount on quantity input
+      const url = "{% url 'ajax_calculate_order_amount' %}";
+      const productId = $("#id_product").val();
+      const supplierId = $("#id_supplier").val();
+      const quantity = $(this).val();
+    
+      $.ajax({
+        url: url,
+        data: {
+          'product_id': productId,
+          'supplier_id': supplierId,
+          'quantity': quantity   
+        },
+        success: function (data) {
+          console.log(data);
+          $("#id_ord_amount").val(data.ord_amount);  // Update order amount
+        },
+        error: function (error) {
+          console.log("Error:", error);
+        }
+      });
+    });
+    
+  }); 
+</script>
+
+
+{% endblock %}

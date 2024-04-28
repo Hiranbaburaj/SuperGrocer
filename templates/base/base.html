@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SuperGrocer{% endblock %}</title>
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+</head>
+<body style="padding-top: 20px;">
+    <nav class="navbar fixed-top navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">SuperGrocer</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'product_list' %}">Product List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'add_product' %}">Add Product</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                          Category
+                        </a>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="{% url 'category_list' %}">Category List</a>
+                          <a class="dropdown-item" href="{% url 'add_category' %}">Add Category</a>
+                          <a class="dropdown-item" href="{% url 'subcategory_list' %}">Subcategory List</a>
+                          <a class="dropdown-item" href="{% url 'add_subcategory' %}">Add Subcategory</a>
+                        </div>                   
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'place_purchaseorder' %}">Place Order</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'purchaseorder_list' %}">Order List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'inventory_list' %}">Inventory</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'purchase_list' %}">Purchases</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'sales_list' %}">Sales</a>
+                    </li>
+                </ul>
+            </div>
+        </div>  
+    </nav>
+    
+    <div class="container mt-5">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

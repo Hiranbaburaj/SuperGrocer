@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% endblock %}</title>
+  {% load static %}
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Supplier Dashboard</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'supplier_dashboard' %}">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'add_supplierproduct' %}">Add New Product</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'purchase_orders_list' %}">Orders Pending</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'purchase_orders_approved' %}">Orders Approved</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'edit_supplier' %}">Edit Profile</a>  </li>
+        </ul>
+        <ul class="navbar-nav">
+          <form method="POST" action="{% url 'logout' %}" class="d-flex">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger ">Logout</button>
+          </form>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    {% block content %}{% endblock %}
+  </div>
+
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>
+
+
