@@ -109,7 +109,7 @@ def processOrder(request):
             return JsonResponse({'error': 'Cart is Empty'}, safe=False)
 
         else:
-        # Validate order total (optional)
+            # Validate order total (optional)
             if order.get_cart_total != total:
                 return JsonResponse({'error': 'Order total mismatch'}, safe=False)
 
@@ -117,23 +117,32 @@ def processOrder(request):
                 order.complete = True
                 order.save()
 
-                # Update inventory quantities for each order item
                 for order_item in order.orderitem_set.all():
                     product = order_item.product
-                    available_inventory = Inventory.objects.filter(product=product).first()  # Get first matching entry
+                    available_inventories = Inventory.objects.filter(product=product).order_by('id')  # Get ordered inventory entries
 
-                    # Check for sufficient inventory before update (optional)
-                    if available_inventory and available_inventory.inv_qty < order_item.quantity:
-                        return JsonResponse({'error': 'Insufficient inventory'}, safe=False)
+                    for available_inventory in available_inventories:
+                        # Reduce quantity from available inventory
+                        quantity_to_deduct = min(available_inventory.inv_qty, order_item.quantity)
+                        order_item.quantity -= quantity_to_deduct
+                        available_inventory.inv_qty -= quantity_to_deduct
 
-                    if available_inventory:
-                        available_inventory.inv_qty -= order_item.quantity
-                        if available_inventory.inv_qty <= 0:  # Delete if quantity reaches 0
-                            available_inventory.delete()
-                        else:
+                        # Update or delete inventory
+                        if available_inventory.inv_qty > 0:
                             available_inventory.save()
+                        else:
+                            available_inventory.delete()
 
-            return JsonResponse('Payment Complete', safe=False)
+                        # Break loop if order item quantity is fulfilled
+                        if order_item.quantity == 0:
+                            break
+
+                    # Check if order item quantity was not fulfilled entirely
+                    if order_item.quantity > 0:
+                        return JsonResponse({'error': 'Insufficient inventory for ' + str(order_item.product)}, safe=False)
+
+                return JsonResponse('Payment Complete', safe=False)
+
     else:
         return JsonResponse({'error': 'You must be logged in to place an order'}, safe=False)
 
