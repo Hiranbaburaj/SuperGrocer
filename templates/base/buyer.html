@@ -2,7 +2,7 @@
 {% load static %}
 <html>
   <head>
-    <title>Ecom</title>
+    <title>SuperGrocer</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
 
@@ -29,10 +29,14 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'edit_buyer' %}">Edit Profile</a>
+              <a class="nav-link" href="{% url 'edit_buyer' %}">
+                <i class="fa-solid fa-user-pen fa-lg"></i>
+                </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+              <a class="nav-link" href="{% url 'logout' %}">
+                <i class="fa-solid fa-arrow-right-from-bracket fa-xl"></i>
+                </a>
             </li>
           </ul>
         </div>

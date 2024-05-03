@@ -1,27 +1,30 @@
 {% extends 'base/buyer.html' %}
 {% load static %}
 {% block content %}
+  <form method="get" class="form-inline mb-3 d-flex justify-content-between">
+    <div class="col-sm-3" style="margin-left: 920px;">  {{ product_filter.form.prod_name }}
+    </div>
+    <button type="submit" class="btn btn-primary">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  </form>
 
-<form method="get" class="form-inline mb-3 d-flex justify-content-between">
-  <div class="col-sm-3" style="margin-left: 760px;">  {{ product_filter.form.prod_name }}
-  </div>
-  <button type="submit" class="btn btn-primary">
-    <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-</form>
-
-  <div class="row">
-    {% for product in products %}
-      <div class="col-lg-3">
-        <img class="thumbnail" src="{{ product.image.url }}" />
-        <div class="box-element product">
-          <h6><strong>{{ product.prod_name }}</strong></h6> <hr />
-
-          <button data-product="{{ product.id }}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
-          {% comment %} <a class="btn btn-outline-success" href="#">View</a> {% endcomment %}
-          <h4 style="display: inline-block; float: right"><strong>&#8377;{{ product.sell_price }}</strong></h4>
+  <div class="container">
+    <div class="row">
+      {% for product in products %}
+      <div class="col-sm-3" style="max-width: 18rem;">
+        <div class="product-card">
+          <img src="{{ product.image.url }}" alt="Product Image" class="product-image">
+          <h5 class="mt-4">{{ product.prod_name }}</h5>
+          <p><strong>&#8377;{{ product.sell_price }}</strong></p>
+          <button data-product="{{ product.id }}" data-action="add" class="btn btn-primary btn-block add-btn update-cart">
+            <i class="fas fa-shopping-cart"></i> Add to Cart
+          </button>
         </div>
       </div>
-    {% endfor %}
+      {% endfor%}
+    </div>
   </div>
+
 {% endblock %}
+
