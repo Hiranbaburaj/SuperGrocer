@@ -1,0 +1,34 @@
+/*Active links menu*/
+.active{
+    background-color: var(--first-color);
+  }
+  
+  /*===== COLLAPSE =====*/
+  .collapse{
+    grid-template-columns: 20px max-content 1fr;
+  }
+  .collapse__link{
+    justify-self: flex-end;
+    transition: .5s;
+  }
+  .collapse__menu{
+    display: none;
+    padding: .75rem 2.25rem;
+  }
+  .collapse__sublink{
+    color: var(--sub-color);
+    font-size: var(--small-font-size);
+  }
+  .collapse__sublink:hover{
+    color: var(--white-color);
+  }
+  
+  /*Show collapse*/
+  .showCollapse{
+    display: block;
+  }
+  
+  /*Rotate icon*/
+  .rotate{
+    transform: rotate(180deg);
+  }

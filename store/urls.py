@@ -25,8 +25,5 @@ urlpatterns = [
     path('inventory_list/', views.inventory_list, name='inventory_list'),
     
     path('sales_list/', views.sales_list, name='sales_list'),
-    path('sales_info/<str:sales_order_id>/', views.sales_info, name='sales_info'),
-    
-
-    
+    path('sales_info/<str:sales_order_id>/', views.sales_info, name='sales_info'),    
 ]

@@ -1,30 +1,36 @@
-{% extends 'base/buyer.html' %}
-{% load static %}
-{% block content %}
-  <form method="get" class="form-inline mb-3 d-flex justify-content-between">
-    <div class="col-sm-3" style="margin-left: 920px;">  {{ product_filter.form.prod_name }}
-    </div>
-    <button type="submit" class="btn btn-primary">
-      <i class="fa-solid fa-magnifying-glass"></i>
-    </button>
-  </form>
-
-  <div class="container">
-    <div class="row">
-      {% for product in products %}
-      <div class="col-sm-3" style="max-width: 18rem;">
-        <div class="product-card">
-          <img src="{{ product.image.url }}" alt="Product Image" class="product-image">
-          <h5 class="mt-4">{{ product.prod_name }}</h5>
-          <p><strong>&#8377;{{ product.sell_price }}</strong></p>
-          <button data-product="{{ product.id }}" data-action="add" class="btn btn-primary btn-block add-btn update-cart">
-            <i class="fas fa-shopping-cart"></i> Add to Cart
-          </button>
-        </div>
-      </div>
-      {% endfor%}
-    </div>
+{% extends 'base/buyer.html' %} {% load static %} {% block content %}
+<form method="get" class="form-inline mb-3 d-flex justify-content-between">
+  <div class="col-sm-3" style="margin-left: 920px">
+    {{ product_filter.form.prod_name }}
   </div>
+  <button type="submit" class="btn btn-primary">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+</form>
+
+<div class="container">
+  <div class="row">
+    {% for product in products %}
+    <div class="col-sm-3" style="max-width: 18rem">
+      <div class="product-card">
+        <img
+          src="{{ product.image.url }}"
+          alt="Product Image"
+          class="product-image"
+        />
+        <h5 class="mt-4">{{ product.prod_name }}</h5>
+        <p><strong>&#8377;{{ product.sell_price }}</strong></p>
+        <button
+          data-product="{{ product.id }}"
+          data-action="add"
+          class="btn btn-primary btn-block add-btn update-cart"
+        >
+          <i class="fas fa-shopping-cart"></i> Add to Cart
+        </button>
+      </div>
+    </div>
+    {% endfor%}
+  </div>
+</div>
 
 {% endblock %}
-

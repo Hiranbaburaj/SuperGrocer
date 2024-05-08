@@ -1,0 +1,58 @@
+{% extends 'base/buyer.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Sales List</h2>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Order ID</th>
+        <th scope="col">View Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sale in sales %}
+      <tr>
+        <td>{{ sale.transaction_id }}</td>
+        <td>
+            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#salesModal{{ sale.id }}">
+                <i class="fa-solid fa-circle-info fa-xl"></i> 
+            </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Modal -->
+  {% for sale in sales %}
+    <div class="modal fade" id="salesModal{{ sale.id }}" tabindex="-1" aria-labelledby="salesModalLabel{{ sales.id }}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="salesModalLabel{{ sale.id }}">Purchase Details</h5>
+            {% comment %} <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> {% endcomment %}
+          </div>
+          <div class="modal-body">
+            <h5>Date: {{ sale.date_ordered}}</h5>
+            <h5>Payment ID: {{ sale.razorpay_order_id}}</h5>
+            <h5>Order Items:</h5>
+            <ul>
+              {% for item in sale.orderitem_set.all %}
+                <li>{{ item.product.prod_name }} - Quantity: {{ item.quantity }}</li>
+              {% endfor %}
+            </ul>
+            <h5>Total: &#8377;{{sale.get_cart_total}}</h5>
+          </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                  <i class="fa-solid fa-xmark fa-2xl"></i>
+              </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+</div>
+{% endblock %}

@@ -94,65 +94,6 @@ def updateItem(request):
 
     return JsonResponse('Item quantity updated', safe=False)
 
-# @login_required
-# def processOrder(request):
-#     transaction_id = datetime.datetime.now().timestamp()
-#     data = json.loads(request.body)
-
-#     if request.user.is_authenticated:
-#         buyer = request.user.buyer
-#         order, created = SalesOrder.objects.get_or_create(buyer=buyer, complete=False)
-#         order.date_ordered = timezone.now()
-#         order.save()
-
-#         total = float(data['form']['total'])
-#         order.transaction_id = transaction_id
-#         cartItems = order.get_cart_items
-
-#         if cartItems == 0:
-#             return JsonResponse({'error': 'Cart is Empty'}, safe=False)
-
-#         else:
-#             # Validate order total (optional)
-#             if order.get_cart_total != total:
-#                 return JsonResponse({'error': 'Order total mismatch'}, safe=False)
-
-#             with transaction.atomic():  # Wrap updates in an atomic transaction
-#                 order.complete = True
-#                 payment = client.order.create({'amount': total*100 , 'currency': 'INR' , 'payment_capture': 1})
-#                 print(payment)
-#                 order.razorpay_order_id = payment['id']
-#                 order.save()
-
-#                 for order_item in order.orderitem_set.all():
-#                     product = order_item.product
-#                     available_inventories = Inventory.objects.filter(product=product).order_by('id')  # Get ordered inventory entries
-
-#                     for available_inventory in available_inventories:
-#                         # Reduce quantity from available inventory
-#                         quantity_to_deduct = min(available_inventory.inv_qty, order_item.quantity)
-#                         order_item.quantity -= quantity_to_deduct
-#                         available_inventory.inv_qty -= quantity_to_deduct
-
-#                         # Update or delete inventory
-#                         if available_inventory.inv_qty > 0:
-#                             available_inventory.save()
-#                         else:
-#                             available_inventory.delete()
-
-#                         # Break loop if order item quantity is fulfilled
-#                         if order_item.quantity == 0:
-#                             break
-
-#                     # Check if order item quantity was not fulfilled entirely
-#                     if order_item.quantity > 0:
-#                         return JsonResponse({'error': 'Insufficient inventory for ' + str(order_item.product)}, safe=False)
-
-#                 return JsonResponse('Payment Complete', safe=False)
-
-#     else:
-#         return JsonResponse({'error': 'You must be logged in to place an order'}, safe=False)
-
 @login_required
 def processOrder(request):
   transaction_id = datetime.datetime.now().timestamp()
@@ -238,3 +179,15 @@ def edit_buyer(request):
     context = {'form': form}
     return render(request, 'buyer/edit_buyer.html', context)
   
+@login_required
+def sale_list(request):
+    buyer = request.user.buyer
+    sales = buyer.salesorder_set.filter(complete=True).order_by('-id').order_by('-id') 
+    context = {
+        'sales': sales
+    }
+    return render(request, 'buyer/sale_list.html', context)
+
+def sale_info(request, sales_order_id):
+    order_items = OrderItem.objects.filter(order_id=sales_order_id)
+    return render(request, 'store/sale_info.html', {'order_items': order_items})

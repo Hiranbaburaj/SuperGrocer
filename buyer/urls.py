@@ -9,4 +9,6 @@ urlpatterns = [
   path('process_order/', views.processOrder, name='process_order'),
   path('edit_buyer/', views.edit_buyer, name='edit_buyer'),
   path('update_inventory/', views.update_inventory, name='update_inventory'),
+  path('sale_list/', views.sale_list, name='sale_list'),
+  path('sale_info/<str:sales_order_id>/', views.sale_info, name='sale_info'),
 ]
