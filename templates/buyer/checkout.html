@@ -2,50 +2,6 @@
 {% load static %}
 {% block content %}
   <div class="row">
-    {% comment %} <div class="col-lg-6">
-      <div class="box-element" id="form-wrapper">
-        <form id="form">
-          <div id="user-info">
-            <div class="form-field">
-              <input required class="form-control" type="text" name="name" placeholder="Name.." />
-            </div>
-            <div class="form-field">
-              <input required class="form-control" type="email" name="email" placeholder="Email.." />
-            </div>
-          </div>
-
-          <div id="shipping-info">
-            <hr />
-            <p>Shipping Information:</p>
-            <hr />
-            <div class="form-field">
-              <input class="form-control" type="text" name="address" placeholder="Address.." />
-            </div>
-            <div class="form-field">
-              <input class="form-control" type="text" name="city" placeholder="City.." />
-            </div>
-            <div class="form-field">
-              <input class="form-control" type="text" name="state" placeholder="State.." />
-            </div>
-            <div class="form-field">
-              <input class="form-control" type="text" name="zipcode" placeholder="Zip code.." />
-            </div>
-            <div class="form-field">
-              <input class="form-control" type="text" name="country" placeholder="Zip code.." />
-            </div>
-          </div>
-
-          <hr />
-          <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue" />
-        </form>
-      </div>
-
-      <br />
-      <div class="box-element hidden" id="payment-info">
-        <small>Paypal Options</small>
-      </div>
-    </div> {% endcomment %}
-
     <div class="col-lg-6">
       <div class="box-element">
         <a class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
@@ -70,27 +26,53 @@
         {% endfor %}
         <h5>Items: {{ order.get_cart_items }}</h5>
         <h5>Total: {{ order.get_cart_total }}</h5>
-        <button id="make-payment" type="button" class="btn btn-success">Make Payment</button>
+        <button id="rzp-button1" type="button" class="btn btn-success">Make Payment</button>
       </div>
     </div>
   </div>
 
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script>
-    var total = '{{order.get_cart_total}}'
-    document.getElementById('make-payment').addEventListener('click', function (e) {
-      submitFormData()
-    })
+    // Function to fetch payment details and initiate Razorpay checkout
+    function initiateRazorpay(paymentData) {
+      var options = {
+        "key": "rzp_test_mQyPxMF73hDCaa", // Replace with your actual key
+        "amount": paymentData.amount * 100, // Convert amount to paise
+        "currency": "INR",
+        "name": "Acme Corp",
+        "description": "Purchase",
+        "image": "https://example.com/your_logo",
+        "order_id": paymentData.id,
+        "handler": function (response) {
+          if (response.razorpay_payment_id) { // Check for successful payment
+            window.location.href = "{% url 'shop' %}"; // Redirect to shop URL
+          } else {
+            // Handle payment failure (explained later)
+          }
+        },
+        "theme": {
+          "color": "#3399cc"
+        }
+      };
+      var rzp1 = new Razorpay(options);
+      rzp1.on('payment.failed', function (response) {
+        // Handle payment failure (explained later)
+      });
+      rzp1.open();
+    }
+  
+    // Function to submit form data and get payment details
     function submitFormData() {
-      console.log('Payment Button Clicked')
-    
+      console.log('Payment Button Clicked');
+  
       var userFormData = {
         name: null,
         email: null,
-        total: total
-      }
-    
-      var url = '/buyer/process_order/'
-    
+        total: '{{ order.get_cart_total }}'
+      };
+  
+      var url = '/buyer/process_order/';
+  
       fetch(url, {
         method: 'POST',
         headers: {
@@ -99,20 +81,24 @@
         },
         body: JSON.stringify({ form: userFormData })
       })
-        .then((response) => response.json())
-        .then((data) => {
+        .then(response => response.json())
+        .then(data => {
           if (data.error) {
-            alert(data.error)
-            return
+            alert(data.error);
+            return;
           }
-          console.log('Success:', data)
-          alert('Transaction Completed')
-          window.location.href = "{% url 'shop' %}"
+          console.log('Success:', data);
+          // Call initiateRazorpay with retrieved payment data
+          initiateRazorpay(data.payment);
         })
-        .catch((error) => {
-          console.error('Error:', error)
-          alert('An error occurred. Please try again.')
-        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred. Please try again.');
+        });
     }
+  
+    document.getElementById('rzp-button1').addEventListener('click', submitFormData);
   </script>
+  
+  
 {% endblock %}

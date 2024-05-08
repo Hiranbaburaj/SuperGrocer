@@ -141,3 +141,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 
 LOGIN_URL = 'login'
+
+KEY = 'rzp_test_mQyPxMF73hDCaa'
+
+SECRET = 'ssln7RJaBVuAOh2FjWoxkI07'
